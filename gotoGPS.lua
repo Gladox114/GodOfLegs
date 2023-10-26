@@ -77,35 +77,34 @@ function Goto.posFirstX(vec, forwardFunc)
     Goto.Zaxis(vec, forwardFunc)
 end
 
---[[
-function Goto.facingFirst_old(vec,MoveDirections,facing)
+function Goto.facingFirst_old(vec, MoveDirections, facing)
     if facing == 2 or facing == 4 then -- walk the facing axis first... Will be useless if we want to use a main axis. Maybe it's completely useless
-        Goto.posFirstZ(vec,MoveDirections.forward)
-    else                        -- probably facing the x coordinates so lets go them first  | I really don't know why I am doing this
-        Goto.posFirstX(vec,MoveDirections.forward)
+        Goto.posFirstZ(vec, MoveDirections.forward)
+    else -- probably facing the x coordinates so lets go them first  | I really don't know why I am doing this
+        Goto.posFirstX(vec, MoveDirections.forward)
     end
-    Goto.Yaxis(vec,MoveDirections)
+    Goto.Yaxis(vec, MoveDirections)
 end
 
-function Goto.position_old(vec,mainAxis,goingFromAxis,MoveDirections) -- vector position, string "x" or "z", true or false, just put "move" api into it or a custom move list that doesn't have veinminer call function as example
+function Goto.position_old(vec, mainAxis, goingFromAxis, MoveDirections) -- vector position, string "x" or "z", true or false, just put "move" api into it or a custom move list that doesn't have veinminer call function as example
     if mainAxis == "z" then
         if goingFromAxis then
-            Goto.posFirstZ(vec,MoveDirections.forward)
-            Goto.Yaxis(vec,MoveDirections)
+            Goto.posFirstZ(vec, MoveDirections.forward)
+            Goto.Yaxis(vec, MoveDirections)
         else
-            Goto.Yaxis(vec,MoveDirections)
-            Goto.posFirstX(vec,MoveDirections.forward)
+            Goto.Yaxis(vec, MoveDirections)
+            Goto.posFirstX(vec, MoveDirections.forward)
         end
     elseif mainAxis == "x" then
         if goingFromAxis then
-            Goto.posFirstX(vec,MoveDirections.forward)
-            Goto.Yaxis(vec,MoveDirections)
+            Goto.posFirstX(vec, MoveDirections.forward)
+            Goto.Yaxis(vec, MoveDirections)
         else
-            Goto.Yaxis(vec,MoveDirections)
-            Goto.posFirstZ(vec,MoveDirections.forward)
+            Goto.Yaxis(vec, MoveDirections)
+            Goto.posFirstZ(vec, MoveDirections.forward)
         end
     end
-end]]
+end
 
 function Goto.facingFirst(vec, forwardFunc, facing)
     vec = vec - turtle.location
