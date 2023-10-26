@@ -14,7 +14,7 @@ blacklist = {
 veinMiningEnabled = true
 --------------
 
-require("vectorCalc")
+require("GodOfLegs/vectorCalc")
 
 -- Calling Requirements
 nilfunc = function() return end
@@ -23,10 +23,10 @@ fuel = {}
 veinminer = {}
 torch = {}
 
-TT1 = require("fuelCheck") -- if you don't want or need this then just remove this or don't put in the file
-TT2 = require("veinMining")
-TT3 = require("invCheck")
-TT4 = require("torch")
+TT1 = require("GodOfLegs/fuelCheck") -- if you don't want or need this then just remove this or don't put in the file
+TT2 = require("GodOfLegs/veinMining")
+TT3 = require("GodOfLegs/invCheck")
+TT4 = require("GodOfLegs/torch")
 if not TT1 then
     fuel.refuelItself = nilfunc
     print("Movement: fuelCheck not loaded")
