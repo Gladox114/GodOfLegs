@@ -110,7 +110,7 @@ function dig.inspect(Tinspect)
         end
         if blacklisted == false then
             if scanOre(block["name"]) then -- if it's ore
-                vinemining()
+                vinemining() -- if vinemining is enabled
                 return false
             else
                 if shouldCheck then
@@ -184,6 +184,11 @@ move.tunnel = function()
     move.forward()
     dig.up()
     dig.inspect(turtle.inspectDown)
+end
+--reversed
+move.tunnelR = function()
+    move.main("forward", dig.forward)
+    dig.down()
 end
 
 move.bigTunnel = function()
