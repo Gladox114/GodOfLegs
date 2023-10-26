@@ -23,6 +23,10 @@ function vector.calculateDistance(vector1, vector2)
     return distance
 end
 
+function vector.vectorEquals(vector1, vector2)
+    return vector1.x == vector2.x and vector1.y == vector2.y and vector1.z == vector2.z
+end
+
 -- The list has a string name indexed with the position.
 -- That index contains an another index if it's used and "ore" is either true or false
 -- mapping.mappedOre = {

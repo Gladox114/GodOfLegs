@@ -1,21 +1,22 @@
-
 --config--
-inv = {
-    chestItemsPos = vector.new(0,0,0), -- don't select the chest position but rather one that is in front of the chest
-    chestItemsDir = 4,
-    homePosition = vector.new(0,0,0), -- This would be the strip.startLocation or any other location where you started.
-    blacklist = {
-        "torch",
-        "coal"
-    },
-    realBlocks = {}
-}
-inv.realBlocks["minecraft:stone"] = "minecraft:cobblestone"
+if not inv then
+    inv = {
+        chestItemsPos = vector.new(0, 0, 0), -- don't select the chest position but rather one that is in front of the chest
+        chestItemsDir = 4,
+        homePosition = vector.new(0, 0, 0), -- This would be the strip.startLocation or any other location where you started.
+        blacklist = {
+            "torch",
+            "coal"
+        },
+        realBlocks = {}
+    }
+    inv.realBlocks["minecraft:stone"] = "minecraft:cobblestone"
+end
 ----------
 
 function inv.Space()
     local slotsEmpty = 0
-    for i=1,16 do
+    for i = 1, 16 do
         if turtle.getItemCount(i) == 0 then
             slotsEmpty = slotsEmpty + 1
         end
@@ -26,7 +27,7 @@ function inv.Space()
 end
 
 function inv.doesItFit(name) -- call this if the inventory is full
-    for i=1,16 do
+    for i = 1, 16 do
         if turtle.getItemDetail(i)["name"] == name then
             if turtle.getItemSpace() > 0 then
                 return true
@@ -37,18 +38,18 @@ function inv.doesItFit(name) -- call this if the inventory is full
 end
 
 local emptyInv = {
-    function () turn.to(1) return turtle.drop() end,
-    function () turn.to(2) return turtle.drop() end,
-    function () turn.to(3) return turtle.drop() end,
-    function () turn.to(4) return turtle.drop() end,
+    function() turn.to(1) return turtle.drop() end,
+    function() turn.to(2) return turtle.drop() end,
+    function() turn.to(3) return turtle.drop() end,
+    function() turn.to(4) return turtle.drop() end,
 
-    function () return turtle.dropUp() end,
-    function () return turtle.dropDown() end
+    function() return turtle.dropUp() end,
+    function() return turtle.dropDown() end
 }
 
-function inv.checkBlacklisted(object,blacklist)
-    for i,name in pairs(blacklist) do
-        if string.find(object,name) then
+function inv.checkBlacklisted(object, blacklist)
+    for i, name in pairs(blacklist) do
+        if string.find(object, name) then
             return true
         end
     end
@@ -56,10 +57,10 @@ function inv.checkBlacklisted(object,blacklist)
 end
 
 function inv.emptyFullInv(chestDirection)
-    for i=1,16 do
+    for i = 1, 16 do
         local currentItem = turtle.getItemDetail(i)
         if currentItem then
-            if inv.checkBlacklisted(currentItem["name"],inv.blacklist) == false then
+            if inv.checkBlacklisted(currentItem["name"], inv.blacklist) == false then
                 turtle.select(i)
                 while not emptyInv[chestDirection]() do
                     os.sleep(1)
@@ -70,18 +71,18 @@ function inv.emptyFullInv(chestDirection)
 end
 
 function inv.gotoChest()
-     --local saveFacing = turtle.facing
+    --local saveFacing = turtle.facing
     local saveLocation = turtle.location
     -- goto home first --
-     --[[
+    --[[
      --print("test",inv.homePosition,turtle.location)
      local distance = inv.homePosition - turtle.location
      Goto.position(distance,Goto.getAxis(turtle.facing),true,move)
      ]]
     -- goto the chest --
-    Goto.facingFirst_custom(inv.chestItemsPos,move,turtle.facing)
+    Goto.facingFirst_custom(inv.chestItemsPos, move, turtle.facing)
     --Goto.position(distance,Goto.getAxis(turtle.facing),true,move)
-    
+
     -- empty yourself --
     inv.emptyFullInv(inv.chestItemsDir)
     --[[
@@ -106,4 +107,3 @@ function inv.checkInv(blockName) -- passthrough the blockname as string
     end
     return true
 end
-

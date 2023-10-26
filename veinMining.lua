@@ -1,5 +1,3 @@
-
-
 -- config --
 orelist = { -- the script will scan the words in the name of the block and mine it
     "_ore", -- Don't use "ore" when you have mods like wild_explORErer because that will mine every block of that mod
@@ -8,18 +6,19 @@ orelist = { -- the script will scan the words in the name of the block and mine 
 
 -- If false then "turtle.location" will be updated with GPS when needed.
 -- if true then it needs to know where it is like calculating the coordination with every step.
-offlineCoordination = true 
+offlineCoordination = true
 ------------
+require("GodOfLegs/home")
 
 Vdig = {}
 shouldCheck = true
-function Vdig.main(Tinspect,Tdig)
+function Vdig.main(Tinspect, Tdig)
     local isblock, block = Tinspect()
     if isblock then -- if the block isn't air then
         local ore = false
         local blacklisted = false
-        for i,name in pairs(blacklist) do -- check for every blacklisted word and if there is one then don't dig, else otherwise
-            if string.find(block["name"],name) then
+        for i, name in pairs(blacklist) do -- check for every blacklisted word and if there is one then don't dig, else otherwise
+            if string.find(block["name"], name) then
                 blacklisted = true
                 break
             end
@@ -31,21 +30,22 @@ function Vdig.main(Tinspect,Tdig)
                     local saveLocation_diging = turtle.location
                     local saveFacing_diging = turtle.facing
                     -- go to the last savePoint where the first ore was found (back on track) --
-                    Goto.facingFirst_custom(saveLocation_VeinMining,Vmove,turtle.facing)
+                    Goto.facingFirst_custom(saveLocation_VeinMining, Vmove, turtle.facing)
                     -- going home --
-                                                                       -- function from "Stripping.lua"
-                    Goto.position_custom(strip.startPosition, strip.mainAxis, isGoingFromHome(turtle.location), Vmove)
+                    -- function from "Stripping.lua"
+                    Goto.position_custom(turtle.startPosition, turtle.mainAxis, isGoingFromHome(turtle.location), Vmove)
 
                     inv.gotoChest()
 
                     -- going home --
-                    Goto.position_custom(strip.startPosition, strip.mainAxis, isGoingFromHome(turtle.location), Vmove)
+                    Goto.position_custom(turtle.startPosition, turtle.mainAxis, isGoingFromHome(turtle.location), Vmove)
 
                     -- go to the last savePoint where the first ore was found (back on track) --
-                    Goto.position_custom(saveLocation_VeinMining, strip.mainAxis, isGoingFromHome(turtle.location) ,Vmove)
+                    Goto.position_custom(saveLocation_VeinMining, turtle.mainAxis, isGoingFromHome(turtle.location),
+                        Vmove)
 
                     -- go back to the last ore you tried to mine --
-                    Goto.facingFirst_custom(saveLocation_diging,Vmove,turtle.facing)
+                    Goto.facingFirst_custom(saveLocation_diging, Vmove, turtle.facing)
 
                     turn.to(saveFacing_diging)
                     Tdig()
@@ -60,38 +60,37 @@ function Vdig.main(Tinspect,Tdig)
     end
 end
 
-function printWholeList(list,speed)
-    for i,v in pairs(list) do
+function printWholeList(list, speed)
+    for i, v in pairs(list) do
         if speed ~= 0 then
             os.sleep(speed)
         end
         if type(v) == "table" then
-            for z,a in pairs(v) do
-                print(i,z,a)
+            for z, a in pairs(v) do
+                print(i, z, a)
             end
         else
-            print(i,v)
+            print(i, v)
         end
     end
 end
 
-
 --function printWholeList(list) for i,v in pairs(list) do os.sleep(yees) if type(v) == "table" then for z,a in pairs(v) do print(i,z,a) end else print(i,v) end end end
 
-Vdig.forward =   function() Vdig.main(turtle.inspect, turtle.dig) end
-Vdig.up =        function() Vdig.main(turtle.inspectUp, turtle.digUp) end
-Vdig.down =      function() Vdig.main(turtle.inspectDown, turtle.digDown) end
+Vdig.forward = function() Vdig.main(turtle.inspect, turtle.dig) end
+Vdig.up = function() Vdig.main(turtle.inspectUp, turtle.digUp) end
+Vdig.down = function() Vdig.main(turtle.inspectDown, turtle.digDown) end
 
 Vmove = {}
 
-Vmove.forward =  function() move.main("forward", Vdig.forward) end
-Vmove.up =       function() move.main("up", Vdig.up) end
-Vmove.down =     function() move.main("down", Vdig.down) end
+Vmove.forward = function() move.main("forward", Vdig.forward) end
+Vmove.up = function() move.main("up", Vdig.up) end
+Vmove.down = function() move.main("down", Vdig.down) end
 
 
 function scanOre(blockname)
-    for i,name in pairs(orelist) do
-        if string.find(blockname,name) then
+    for i, name in pairs(orelist) do
+        if string.find(blockname, name) then
             print(name)
             return true
         end
@@ -103,9 +102,9 @@ inspectDirection = {
     up = turtle.inspectUp,
     down = turtle.inspectDown,
     forward = turtle.inspect,
-    left = function() turn.left() local a,b=turtle.inspect() turn.right() return a,b end,
-    right = function() turn.right() local a,b=turtle.inspect() turn.left() return a,b end,
-    back = function() turn.leftTwice() local a,b=turtle.inspect() turn.leftTwice() return a,b end
+    left = function() turn.left() local a, b = turtle.inspect() turn.right() return a, b end,
+    right = function() turn.right() local a, b = turtle.inspect() turn.left() return a, b end,
+    back = function() turn.leftTwice() local a, b = turtle.inspect() turn.leftTwice() return a, b end
 }
 
 
@@ -136,7 +135,7 @@ mapping.onlyOres = {}
 
 function mapping.onlyOresList(list)
     local newTable = {}
-    for coord,values in pairs(list) do
+    for coord, values in pairs(list) do
         if values.ore == true then
             newTable[coord] = values
         end
@@ -165,9 +164,9 @@ end
 -- find that boolean                                --
 ------------------------------------------------------
 --                 vector, table with strings, boolean*   , string*
-function checkList(object, list              , activeState, stateVariableName)
+function checkList(object, list, activeState, stateVariableName)
 
-    for item,state in pairs(list) do
+    for item, state in pairs(list) do
 
         if stateVariableName then
             state = state[stateVariableName]
@@ -176,7 +175,7 @@ function checkList(object, list              , activeState, stateVariableName)
         if object:tostring() == item then
             if not activeState then
                 --print("z",item,state)
-                return true 
+                return true
             elseif state == true then
                 --print("z",item,state)
                 return true
@@ -197,11 +196,11 @@ end
 
 function scanSurrounding()
     -- for every direction
-    for i,direction in pairs(directionalOrder) do
+    for i, direction in pairs(directionalOrder) do
         -- get position of that directional block without rotating and moving
         local blockPosition = getBlockPos[direction]()
         -- check if you already scanned that block. If not then rotate and inspect that ore
-        if checkList(blockPosition,mapping.mappedOre) == false then
+        if checkList(blockPosition, mapping.mappedOre) == false then
             -- inspect that ore and return info
             local isblock, block = inspectDirection[direction]()
             if not mapping.mappedOre[blockPosition:tostring()] then
@@ -239,12 +238,12 @@ digDirection = {
 function mineNearestOre() -- |if you move the turtle then this function still things it is in the old position when turtle.location isn't updated
     -- for every direction, rotate so far till you find ore,
     -- then mine it and go to it
-    for i,direction in pairs(directionalOrder) do
+    for i, direction in pairs(directionalOrder) do
 
         local blockPosition = getBlockPos[direction]()
         --print("im checking",direction,blockPosition)
-        if checkList(blockPosition,mapping.mappedOre,true,"ore") then
-            print(direction,"Minin it!")
+        if checkList(blockPosition, mapping.mappedOre, true, "ore") then
+            print(direction, "Minin it!")
             digDirection[direction]()
 
             mapping.mappedOre[blockPosition:tostring()].ore = false -- mark the mined ore as mined
@@ -263,8 +262,6 @@ function mineNearestOre() -- |if you move the turtle then this function still th
     return false
 end
 
-
-
 --bug if it's under then the turtle maybe doesn't set it to false
 
 function vinemining()
@@ -274,20 +271,20 @@ function vinemining()
     local distance
     local scan = true
     while true do
-        if scan then scanSurrounding() end --scan surround and mark ore 
+        if scan then scanSurrounding() end --scan surround and mark ore
         scan = mineNearestOre() --return if it should be scanned. When Ore get's mined it is in a new location.
         if scan == false then -- if there was no ore to mine then
             pos = mapping.getNearestOre(mapping.mappedOre) -- get the next closest ore position from the scanned list
             if pos then -- if the list has some ore to mine
-                print("going to nearest Ore:",pos,turtle.location)
+                print("going to nearest Ore:", pos, turtle.location)
                 --updateLocation()
-                Goto.facingFirst_custom(pos,Vmove,turtle.facing) -- Fixed |The Goto command mines the Ore but doesn't remove it from the list!!!
+                Goto.facingFirst_custom(pos, Vmove, turtle.facing) -- Fixed |The Goto command mines the Ore but doesn't remove it from the list!!!
                 --updateLocation() -- get the location of the current position | or update it
                 mapping.mappedOre[turtle.location:tostring()].ore = false -- Remove the ore you went to
             else -- goto last position and continue strip mining or smth
                 print("going back to job")
                 --updateLocation()
-                Goto.position_custom(saveLocation_VeinMining,Goto.getAxis(saveFacing_VeinMining),false,Vmove)
+                Goto.position_custom(saveLocation_VeinMining, Goto.getAxis(saveFacing_VeinMining), false, Vmove)
                 turn.to(saveFacing_VeinMining)
                 break
             end
@@ -295,4 +292,3 @@ function vinemining()
 
     end
 end
-

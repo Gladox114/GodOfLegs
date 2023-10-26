@@ -15,6 +15,7 @@ veinMiningEnabled = true
 --------------
 
 require("GodOfLegs/vectorCalc")
+require("GodOfLegs/home")
 
 -- Calling Requirements
 nilfunc = function() return end
@@ -119,19 +120,20 @@ function dig.inspect(Tinspect)
                         local saveLocation = turtle.location
                         local saveFacing = turtle.facing
                         -- go to start position --
-                        Goto.position_custom(strip.startPosition,
-                            strip.mainAxis, -- choose one axis like z or x
+                        Goto.position_custom(turtle.startPosition,
+                            turtle.mainAxis, -- choose one axis like z or x
                             isGoingFromHome(turtle.location), -- returns true or false
                             move)
 
                         inv.gotoChest()
 
                         -- go to start position
-                        Goto.position_custom(strip.startPosition, strip.mainAxis, isGoingFromHome(turtle.location), move)
+                        Goto.position_custom(turtle.startPosition, turtle.mainAxis, isGoingFromHome(turtle.location),
+                            move)
 
                         -- go back to the saved location --
                         --Goto.facingFirst_custom(saveLocation,move,turtle.facing)
-                        Goto.position_custom(saveLocation, strip.mainAxis, isGoingFromHome(turtle.location), move)
+                        Goto.position_custom(saveLocation, turtle.mainAxis, isGoingFromHome(turtle.location), move)
 
                         turn.to(saveFacing)
                         shouldCheck = true
