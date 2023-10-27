@@ -10,7 +10,9 @@ local files = {
   "gotoGPS.lua",
   "excavate.lua",
   "vectorCalc.lua",
-  "getDirection.lua"
+  "getDirection.lua",
+  "veinMining.lua",
+  "home.lua"
 }
 
 
