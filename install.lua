@@ -8,7 +8,6 @@ local files = {
   "fuelCheck.lua",
   "torch.lua",
   "gotoGPS.lua",
-  "excavate.lua",
   "vectorCalc.lua",
   "getDirection.lua",
   "veinMining.lua",
