@@ -1,5 +1,3 @@
-require("GodOfLegs/gotoGPS")
-homeLib = true
 function initHomeAxis()
     -- get the main axis (x axis or y axis) so the turtle will always try to go the main path and then to the sides regardless where.
     turtle.mainAxis = Goto.getAxis(turtle.startFacing)

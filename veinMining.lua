@@ -8,9 +8,7 @@ orelist = { -- the script will scan the words in the name of the block and mine 
 -- if true then it needs to know where it is like calculating the coordination with every step.
 offlineCoordination = true
 ------------
-if homeLib ~= nil then
-    require("GodOfLegs/home")
-end
+require("GodOfLegs/home")
 
 Vdig = {}
 shouldCheck = true
