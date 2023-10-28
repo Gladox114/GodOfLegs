@@ -130,8 +130,49 @@ mapping.onlyOres = {}
 --                      "2,3,2" = {ore = false}
 --                     }
 -- by the time it get's calculated it can also contain "distance" which should be temporary
+-- Returns a vector from a string --
 
 
+------------------------------------
+-- sources that helped --
+-- https://stackoverflow.com/questions/19262761/lua-need-to-split-at-comma
+-------------------------
+function mapping.stringToVector(vectorString)
+    if vectorString then
+        return vector.new(string.gmatch(vectorString, "([^,]+),([^,]+),([^,]+)")())
+    end
+end
+
+-- Returns the distance between two vectors --
+----------------------------------------------
+-- sources that helped --
+-- https://www.varsitytutors.com/calculus_3-help/distance-between-vectors
+-- http://www.computercraft.info/wiki/VectorA:length
+-------------------------
+function mapping.calculateDistance(vector1, vector2)
+    vector3 = vector1 - vector2 -- subtract each other
+    distance = vector3:length() -- the squareroot of summed up squared coordinates | squareroot(x²+y²+z²)
+    return distance
+end
+
+function mapping.getDistancetoAll(list)
+    for i, v in pairs(list) do
+        list[i].distance = mapping.calculateDistance(turtle.location, mapping.stringToVector(i))
+    end
+end
+
+--                            table
+function mapping.getTheLowest(list)
+    local lowestValue = math.huge
+    local lowestIndex
+    for i, v in pairs(list) do
+        if v.distance < lowestValue then
+            lowestIndex = i
+            lowestValue = v.distance
+        end
+    end
+    return lowestIndex
+end
 
 function mapping.onlyOresList(list)
     local newTable = {}
@@ -149,9 +190,9 @@ end
 -- and returns the closest ore      --
 --------------------------------------
 function mapping.getNearestOre()
-    mapping.onlyOres = vector.onlyOresList(vector.mappedOre) -- sorting the active ores (not mined) out and putting them into a list
-    mapping.getDistancetoAll(vector.onlyOres)
-    return mapping.stringToVector(vector.getTheLowest(mapping.onlyOres))
+    mapping.onlyOres = mapping.onlyOresList(mapping.mappedOre) -- sorting the active ores (not mined) out and putting them into a list
+    mapping.getDistancetoAll(mapping.onlyOres)
+    return mapping.stringToVector(mapping.getTheLowest(mapping.onlyOres))
 end
 
 -- Returns a boolean --

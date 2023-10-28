@@ -105,9 +105,9 @@ getBlockPos = {
     end,
 
     forward = function() return getBlockPos.main(turtle.facing) end,
-    left = function() return getBlockPos.main(getBlockPos.dryTurn.left(turtle.facing)) end,
-    right = function() return getBlockPos.main(getBlockPos.dryTurn.right(turtle.facing)) end,
-    back = function() return getBlockPos.main(getBlockPos.dryTurn.left(getBlockPos.dryTurn.left(turtle.facing))) end,
+    left = function() return getBlockPos.main(dryTurn.left(turtle.facing)) end,
+    right = function() return getBlockPos.main(dryTurn.right(turtle.facing)) end,
+    back = function() return getBlockPos.main(dryTurn.left(dryTurn.left(turtle.facing))) end,
 
     up = function() return turtle.location + cachedVectorFacing[5] end,
     down = function() return turtle.location + cachedVectorFacing[6] end
