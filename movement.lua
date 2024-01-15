@@ -11,7 +11,7 @@ blacklist = {
     "chest",
     "turtle"
 }
-veinMiningEnabled = true
+veinMiningEnabled = false
 --------------
 
 require("GodOfLegs/vectorCalc")
@@ -33,8 +33,8 @@ if not TT1 then
     print("Movement: fuelCheck not loaded")
 end
 if not TT2 or veinMiningEnabled == false then
-    veinminer.scanOre = nilfunc
-    veinminer.vinemining = nilfunc
+    scanOre = nilfunc
+    vinemining = nilfunc
     print("Movement: veinmining not loaded")
 end
 if not TT3 then
@@ -46,6 +46,47 @@ if not TT4 then
     print("Movement: Torch not loaded")
 end
 
+if not myCustomHomeFunc then
+    -- declare default throw away of items
+    myCustomHomeFunc = function()
+        local saveLocation = turtle.location
+        local saveFacing = turtle.facing
+
+        -- turn back
+        turn.rightTwice()
+        -- go 2 steps back
+        move.forward()
+        move.forward()
+
+        -- throw items
+        inv.emptyFullInv(turtle.facing)
+
+        turn.to(saveFacing)
+
+        move.forward()
+        move.forward()
+
+        --[[ local saveLocation = turtle.location
+        local saveFacing = turtle.facing
+        -- go to start position --
+        Goto.position_custom(turtle.startPosition,
+            turtle.mainAxis, -- choose one axis like z or x
+            isGoingFromHome(turtle.location), -- returns true or false
+            move)
+
+        inv.gotoChest()
+
+        -- go to start position
+        Goto.position_custom(turtle.startPosition, turtle.mainAxis, isGoingFromHome(turtle.location),
+            move)
+
+        -- go back to the saved location --
+        --Goto.facingFirst_custom(saveLocation,move,turtle.facing)
+        Goto.position_custom(saveLocation, turtle.mainAxis, isGoingFromHome(turtle.location), move)
+
+        turn.to(saveFacing) ]]
+    end
+end
 
 -- Virtual steps --
 -- Tracking location without GPS --
@@ -115,27 +156,13 @@ function dig.inspect(Tinspect)
                 return false
             else
                 if shouldCheck then
+                    -- if the block to break can be picked up into inv
                     if not inv.checkInv(block["name"]) then
+                        -- because this is a global variable, other functions will
+                        -- accidentaly want to check if they can break the block and pickup
                         shouldCheck = false
-                        local saveLocation = turtle.location
-                        local saveFacing = turtle.facing
-                        -- go to start position --
-                        Goto.position_custom(turtle.startPosition,
-                            turtle.mainAxis, -- choose one axis like z or x
-                            isGoingFromHome(turtle.location), -- returns true or false
-                            move)
-
-                        inv.gotoChest()
-
-                        -- go to start position
-                        Goto.position_custom(turtle.startPosition, turtle.mainAxis, isGoingFromHome(turtle.location),
-                            move)
-
-                        -- go back to the saved location --
-                        --Goto.facingFirst_custom(saveLocation,move,turtle.facing)
-                        Goto.position_custom(saveLocation, turtle.mainAxis, isGoingFromHome(turtle.location), move)
-
-                        turn.to(saveFacing)
+                        myCustomHomeFunc()
+                        -- allow to check for the block and space in inventory
                         shouldCheck = true
                         return true
                     end

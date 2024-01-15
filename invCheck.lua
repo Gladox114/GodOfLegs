@@ -70,9 +70,15 @@ function inv.emptyFullInv(chestDirection)
     end
 end
 
+-- [[
+-- goes directly to chest and empties itself
+--
+-- each program needs to decide for themselves how to go near the chest.
+-- Stripmining needs strict paths that were already walked
+-- ]]
 function inv.gotoChest()
     --local saveFacing = turtle.facing
-    local saveLocation = turtle.location
+    --local saveLocation = turtle.location
     -- goto home first --
     --[[
      --print("test",inv.homePosition,turtle.location)
@@ -82,6 +88,7 @@ function inv.gotoChest()
     -- goto the chest --
     Goto.facingFirst_custom(inv.chestItemsPos, move, turtle.facing)
     --Goto.position(distance,Goto.getAxis(turtle.facing),true,move)
+    turn.to(inv.chestItemsDir)
 
     -- empty yourself --
     inv.emptyFullInv(inv.chestItemsDir)

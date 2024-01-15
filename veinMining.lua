@@ -9,6 +9,7 @@ orelist = { -- the script will scan the words in the name of the block and mine 
 offlineCoordination = true
 ------------
 require("GodOfLegs/home")
+require("GodOfLegs/vectorCalc")
 
 Vdig = {}
 shouldCheck = true
