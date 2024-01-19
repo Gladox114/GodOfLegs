@@ -9,7 +9,8 @@
 --- config ---
 blacklist = {
     "chest",
-    "turtle"
+    "turtle",
+    "stella"
 }
 veinMiningEnabled = false
 --------------
